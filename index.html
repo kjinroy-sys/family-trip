@@ -2,10 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>우리집 여행비서</title>
   <style>
-    /* 화면 전체 여백 제거 및 스크롤 방지 */
     body, html { 
         margin: 0; 
         padding: 0; 
@@ -13,12 +12,11 @@
         width: 100%;
         overflow: hidden; 
         background-color: #F2F4F6; 
+        /* 핵심!: 하단 홈 버튼 영역만큼 알아서 여백을 띄워줍니다 (기본 24px) */
+        padding-bottom: env(safe-area-inset-bottom, 24px);
+        box-sizing: border-box;
     }
-    /* iframe을 화면에 꽉 차게 고정 */
     iframe { 
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%; 
         height: 100%; 
         border: none; 
@@ -27,6 +25,6 @@
   </style>
 </head>
 <body>
-  <iframe src="https://script.google.com/macros/s/AKfycbyfXbkdGHFRpBWsrEl16jEotNmVv8sJOqk3_u-8duYBP96jUdmQqcRFjdWqOELu3OremQ/exec"></iframe>
+  <iframe src="https://script.google.com/macros/s/AKfycbyfXBkdGHFRpBWsrEl16jEotNmVVv8sJOqk3_u-8duYBP96jUdmQqcRFjdWqOELu3OremQ/exec"></iframe>
 </body>
 </html>
