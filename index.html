@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>우리집 여행비서</title>
   <style>
+    /* 배경색을 이미지와 유사한 톤으로 맞춰서 깜빡임 방지 */
     body, html { 
         margin: 0; 
         padding: 0; 
@@ -21,38 +22,63 @@
         border: none; 
         display: block; 
     }
+    /* 스플래시 화면: 텍스트 없이 이미지만 꽉 차게 설정 */
+    #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #F2F4F6;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.5s ease-out;
+    }
+    #splash-screen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
   </style>
 </head>
 <body>
 
-  <div id="splash-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #F2F4F6; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease-out;">
-    <img src="https://i.postimg.cc/9Q6Ck3CV/Gemini-Generated-Image-yyrm1iyyrm1iyyrm.png" style="width: 100%; height: 100%; object-fit: cover; position: absolute;">
+  <div id="splash-screen">
+    <img src="https://i.postimg.cc/9Q6Ck3CV/Gemini-Generated-Image-yyrm1iyyrm1iyyrm.png">
   </div>
 
   <iframe id="app-frame" src="https://script.google.com/macros/s/AKfycbyfXbkdGHFRpBWsrEl16jEotNmVv8sJOqk3_u-8duYBP96jUdmQqcRFjdWqOELu3OremQ/exec"></iframe>
 
   <script>
-    // 💡 window.onload를 없애서 구글 스크립트 눈치 보지 않고 무조건 실행되게 변경!
-    
-    // (1) 카톡 파라미터 전달 로직
-    const urlParams = new URLSearchParams(window.location.search);
-    const roomCode = urlParams.get('room');
-    const iframe = document.getElementById('app-frame');
+    // 🚀 실행되자마자 즉시 타이머 가동 (멈춤 방지 핵심)
+    (function() {
+      // 1. 초대 링크(?room=) 처리
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomCode = urlParams.get('room');
+        const iframe = document.getElementById('app-frame');
 
-    if (roomCode) {
-      iframe.src = iframe.src + "?room=" + roomCode;
-    }
-
-    // (2) 화면이 켜지자마자 무조건 2.5초 뒤에 사진 숨기기 (무한 로딩 방지)
-    setTimeout(function() {
-      const splash = document.getElementById('splash-screen');
-      if (splash) {
-        splash.style.opacity = '0'; // 부드럽게 투명해짐
-        setTimeout(() => { 
-          splash.style.display = 'none'; // 뒤에 버튼을 누를 수 있게 완전히 치워줌
-        }, 500);
+        if (roomCode && iframe) {
+          // 주소 뒤에 파라미터를 붙여서 다시 로드
+          iframe.src = iframe.src + "?room=" + roomCode;
+        }
+      } catch (e) {
+        console.error("초대 링크 처리 중 오류:", e);
       }
-    }, 2500); // 2.5초
+
+      // 2. 무조건 실행되는 타이머 (2.5초 후 스플래시 제거)
+      setTimeout(function() {
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+          splash.style.opacity = '0'; // 부드럽게 사라짐
+          setTimeout(function() {
+            splash.style.display = 'none'; // 완전히 제거하여 클릭 방해 금지
+          }, 500);
+        }
+      }, 2500);
+    })();
   </script>
 
 </body>
