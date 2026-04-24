@@ -25,36 +25,35 @@
 </head>
 <body>
 
-  <div id="splash-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #191F28; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease-out;">
-    <img src="https://images.unsplash.com/photo-1488646953014-c8bf7e944700?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 100%; object-fit: cover; position: absolute; opacity: 0.7;">
-    <h1 style="color: white; font-size: 32px; font-weight: 800; z-index: 10000; text-shadow: 0 4px 10px rgba(0,0,0,0.5); font-family: sans-serif;">☁️ 우리집 여행비서</h1>
+  <div id="splash-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #F2F4F6; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease-out;">
+    <img src="https://i.postimg.cc/9Q6Ck3CV/Gemini-Generated-Image-yyrm1iyyrm1iyyrm.png" style="width: 100%; height: 100%; object-fit: cover; position: absolute;">
   </div>
 
   <iframe id="app-frame" src="https://script.google.com/macros/s/AKfycbyfXbkdGHFRpBWsrEl16jEotNmVv8sJOqk3_u-8duYBP96jUdmQqcRFjdWqOELu3OremQ/exec"></iframe>
 
   <script>
-    window.onload = function() {
-      // 카톡으로 들어온 주소에 '?room=코드'가 있는지 확인
-      const urlParams = new URLSearchParams(window.location.search);
-      const roomCode = urlParams.get('room');
-      const iframe = document.getElementById('app-frame');
+    // 💡 window.onload를 없애서 구글 스크립트 눈치 보지 않고 무조건 실행되게 변경!
+    
+    // (1) 카톡 파라미터 전달 로직
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomCode = urlParams.get('room');
+    const iframe = document.getElementById('app-frame');
 
-      // 방 코드가 있다면 iframe 주소 뒤에 붙여서 안쪽으로 넘겨줌
-      if (roomCode) {
-        iframe.src = iframe.src + "?room=" + roomCode;
+    if (roomCode) {
+      iframe.src = iframe.src + "?room=" + roomCode;
+    }
+
+    // (2) 화면이 켜지자마자 무조건 2.5초 뒤에 사진 숨기기 (무한 로딩 방지)
+    setTimeout(function() {
+      const splash = document.getElementById('splash-screen');
+      if (splash) {
+        splash.style.opacity = '0'; // 부드럽게 투명해짐
+        setTimeout(() => { 
+          splash.style.display = 'none'; // 뒤에 버튼을 누를 수 있게 완전히 치워줌
+        }, 500);
       }
-
-      // 2.5초 뒤에 스플래시 화면 부드럽게 숨기기
-      setTimeout(function() {
-        const splash = document.getElementById('splash-screen');
-        if (splash) {
-          splash.style.opacity = '0'; // 투명하게 만들기
-          setTimeout(() => { 
-            splash.style.display = 'none'; // 완전히 제거해서 뒤쪽 버튼이 눌리게 함
-          }, 500);
-        }
-      }, 2500);
-    };
+    }, 2500); // 2.5초
   </script>
+
 </body>
 </html>
